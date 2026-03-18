@@ -52,7 +52,27 @@
                     <span class="share pull-right">
                         <a target="_blank" class="first" href="https://www.facebook.com/sharer.php?u=<?php echo $p->url ?>&t=<?php echo $p->title ?>"><i class="fab fa-facebook"></i></a> 
                         <a target="_blank" href="https://twitter.com/share?url=<?php echo $p->url ?>&text=<?php echo $p->title ?>"><i class="fab fa-twitter"></i></a>
+                        <a target="_blank" href="https://bsky.app/intent/compose?text=<?php echo rawurlencode($p->title . ' ' . $p->url); ?>"><i class="fab fa-bluesky"></i></a>
+                        <a target="_blank" href="#" onclick="return shareToFediverse('Mastodon', '<?php echo rawurlencode($p->title . ' ' . $p->url); ?>');"><i class="fab fa-mastodon"></i></a>
+                        <a target="_blank" href="#" onclick="return shareToFediverse('GoToSocial', '<?php echo rawurlencode($p->title . ' ' . $p->url); ?>');"><i class="fa-solid fa-g"></i></a>
                     </span>
+                    <script>
+                    function shareToFediverse(platformName, encodedText) {
+                        var input = window.prompt('Enter your ' + platformName + ' server domain (for example: mastodon.social)');
+                        if (!input) {
+                            return false;
+                        }
+
+                        var domain = input.trim().replace(/^https?:\/\//i, '').replace(/\/+$/, '');
+                        if (!domain) {
+                            return false;
+                        }
+
+                        var shareUrl = 'https://' + domain + '/share?text=' + encodedText;
+                        window.open(shareUrl, '_blank', 'noopener,noreferrer');
+                        return false;
+                    }
+                    </script>
                 <div style="clear:both;"></div>
                 </div>
                 <div style="margin-top:30px;position:relative;">

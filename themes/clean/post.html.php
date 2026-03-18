@@ -50,11 +50,29 @@
             <?php echo $author->about ?>
         </div>
         <div class="share">
-            <a class="twitter" target="_blank"
-               href="https://twitter.com/share?url=<?php echo $p->url ?>&text=<?php echo $p->title ?>">Twitter</a>
-            <a class="facebook" target="_blank"
-               href="https://www.facebook.com/sharer.php?u=<?php echo $p->url ?>&t=<?php echo $p->title ?>">Facebook</a>
+            <a class="twitter" target="_blank" href="https://twitter.com/share?url=<?php echo $p->url ?>&text=<?php echo $p->title ?>">Twitter</a>
+            <a class="facebook" target="_blank" href="https://www.facebook.com/sharer.php?u=<?php echo $p->url ?>&t=<?php echo $p->title ?>">Facebook</a>
+            <a class="bluesky" target="_blank" href="https://bsky.app/intent/compose?text=<?php echo rawurlencode($p->title . ' ' . $p->url); ?>">Bluesky</a>
+            <a class="mastodon" href="#" onclick="return shareToFediverse('Mastodon', '<?php echo rawurlencode($p->title . ' ' . $p->url); ?>');">Mastodon</a>
+            <a class="gotosocial" href="#" onclick="return shareToFediverse('GoToSocial', '<?php echo rawurlencode($p->title . ' ' . $p->url); ?>');">GoToSocial</a>
         </div>
+        <script>
+        function shareToFediverse(platformName, encodedText) {
+            var input = window.prompt('Enter your ' + platformName + ' server domain (for example: mastodon.social)');
+            if (!input) {
+                return false;
+            }
+
+            var domain = input.trim().replace(/^https?:\/\//i, '').replace(/\/+$/, '');
+            if (!domain) {
+                return false;
+            }
+
+            var shareUrl = 'https://' + domain + '/share?text=' + encodedText;
+            window.open(shareUrl, '_blank', 'noopener,noreferrer');
+            return false;
+        }
+        </script>
     </div>
     <div class="related">
         <h4><?php echo i18n('Related_posts'); ?></h4>
